@@ -112,9 +112,68 @@ SELECT * FROM WORKER WHERE SALARY IS NULL;
 SELECT * FROM WORKER WHERE FIRST_NAME LIKE '_o%' ; -- Means one blank space immediately followed by an "o", after which there may be any characters
 
 
+-- Sorting 
+SELECT * FROM WORKER  ORDER BY SALARY; -- By default gives in ascending order
+SELECT * FROM WORKER  ORDER BY SALARY DESC; -- Gives in descending order
+
+-- Distinct
+SELECT DISTINCT DEPARTMENT FROM WORKER; -- Gives the distinct number of a certain column 
+
+-- GROUP BY 
+-- Here, we can group our data based on certain aggregation functions on a column, such as count, sum, average, max, min etc.
+
+SELECT DEPARTMENT FROM WORKER GROUP BY DEPARTMENT; -- Here, it is important that whatever column or feature we use after "select", should be the same as what we use after "group by". Also, if we do not use any aggregation, by defualt it treats it as distinct function only
+SELECT DEPARTMENT, COUNT(*)  FROM WORKER GROUP BY DEPARTMENT; -- Here, count acts as an aggregation
+
+-- AVG - Average Salary per Department 
+SELECT DEPARTMENT,  COUNT (*), AVG(SALARY) FROM WORKER GROUP BY DEPARTMENT; 
+
+-- MIN - Minimum Salary per Departmnet
+SELECT DEPARTMENT, MIN(SALARY)  FROM WORKER GROUP BY DEPARTMENT; 
+
+-- MAX - Maximum Salary per Departmnet
+SELECT DEPARTMENT, MAX(SALARY)  FROM WORKER GROUP BY DEPARTMENT; 
+
+-- SUM - Sum Salary per Department
+SELECT DEPARTMENT, SUM(SALARY)  FROM WORKER GROUP BY DEPARTMENT; 
+
+-- Group By Filtering
+-- We can use filtering in our data using "HAVING". This is a bit similar to "Where" but not exactly the same
+
+-- HAVING - This only works if "group by" has been applied before
+SELECT DEPARTMENT,FIRST_NAME,SALARY  FROM WORKER GROUP BY DEPARTMENT HAVING COUNT (DEPARTMENT) < 3; 
+
+-- DDL (Data Definition Language) Constraints
+DROP TABLE IF NOT EXISTS WALLET;
+
+CREATE TABLE WALLET(
+	EMPLOYEE_REF_ID  INTEGER,
+	FIRST_NAME VARCHAR(25),
+	LAST_NAME VARCHAR(25),
+	DEPARTMENT CHAR(25),
+	DOMAIN VARCHAR(255) UNIQUE, -- This makes the variable only take in unique values
+	AMOUNT INTEGER NOT NULL DEFAULT 7500, -- Adds a defualt value to this column
+	CONSTRAINT AMOUNT_BALANCE CHECK (AMOUNT < 10000), -- Creates a constraint which makes sure the amount balance never falls below 10000 
+	FOREIGN KEY(EMPLOYEE_REF_ID ) -- This becomes a FOREIGN KEY i.e. it takes it's values from another table and links them together
+		REFERENCES WORKER(WORKER_ID) 	
+			ON DELETE CASCADE  
+);
 
 
+INSERT INTO WALLET  (EMPLOYEE_REF_ID , FIRST_NAME , LAST_NAME , AMOUNT , DEPARTMENT,DOMAIN) VALUES
+	(001,'Monika','Arora',2000,'HR','Rangoli'),
+	(002,'Niharkia','Verma',1850,'Admin','Marketing'),
+	(003,'Vishal','Singhal',1250,'HR','Cake Cutting'),
+	(004,'Amitabh','Singh',1200,'Admin','Public Relations'),
+	(005,'Vivek','Bhati',1500,'Admin','IT'),
+	(006,'Vipul','Diwan',2500,'Account','Finance'),
+	(007,'Satish','Kumar',1100,'Account','Book Keeping'),
+	(008,'Geetika','Chauhan',1700,'Admin','Team Bonding');
+
+INSERT INTO WALLET  (EMPLOYEE_REF_ID , FIRST_NAME , LAST_NAME , DEPARTMENT,DOMAIN) VALUES
+	(009,'Sunny','Singh','Staff','Security');
 
 	
+SELECT * FROM WALLET;
 
 
