@@ -60,7 +60,7 @@ INSERT INTO TITLE (WORKER_REF_ID,WORKER_TITLE,AFFECTED_FROM) VALUES
 	(004,'Asst. Manager','31-10-2017 09.00.00'),
 	(007,'Executive','31-10-2017 09.00.00'),
 	(006,'Lead','31-10-2017 09.00.00'),
-	(003,'LEAD','31-10-2017 09.00.00');
+	(003,'Lead','31-10-2017 09.00.00');
 	
 	
 -- Questions
@@ -98,40 +98,64 @@ SELECT replace(w.FIRST_NAME,'a','A') AS WORKER_NAME_A_CAPITALIZED FROM WORKER AS
 SELECT w.FIRST_NAME || ' ' || w.LAST_NAME AS FULL_NAME FROM WORKER AS w;
 
 -- Q-11. Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending.
+SELECT * FROM WORKER AS w ORDER BY FIRST_NAME ASC;
 
--- Q-12. Write an SQL query to print all Worker details from the Worker table order by 
+-- Q-12. Write an SQL query to print all Worker details from the Worker table order by  FIRST_NAME Ascending and DEPARTMENT descending
+SELECT * FROM WORKER AS w ORDER BY w.FIRST_NAME , w.DEPARTMENT DESC;
 
 -- Q-13. Write an SQL query to print details for Workers with the first name as “Vipul” and “Satish” from Worker table.
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME = 'Vipul' OR w.FIRST_NAME = 'Satish';
+--OR
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME IN ('Vipul' ,'Satish');
 
 -- Q-14. Write an SQL query to print details of workers excluding first names, “Vipul” and “Satish” from Worker table.
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME != 'Vipul' AND w.FIRST_NAME != 'Satish';
+-- OR
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME NOT IN ('Vipul' ,'Satish');
 
 -- Q-15. Write an SQL query to print details of Workers with DEPARTMENT name as “Admin*”.
+SELECT * FROM WORKER AS w WHERE w.DEPARTMENT LIKE 'Admin%';
 
 -- Q-16. Write an SQL query to print details of the Workers whose FIRST_NAME contains ‘a’.
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME LIKE '%a%';
 
 -- Q-17. Write an SQL query to print details of the Workers whose FIRST_NAME ends with ‘a’.
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME LIKE '%a';
 
 -- Q-18. Write an SQL query to print details of the Workers whose FIRST_NAME ends with ‘h’ and contains six alphabets.
+SELECT * FROM WORKER AS w WHERE w.FIRST_NAME LIKE '_____h';
 
 -- Q-19. Write an SQL query to print details of the Workers whose SALARY lies between 100000 and 500000.
+SELECT * FROM WORKER AS w WHERE w.SALARY BETWEEN 100000 AND 500000;
 
 -- Q-20. Write an SQL query to print details of the Workers who have joined in Feb’2014.
+SELECT * FROM WORKER AS w WHERE YEAR(JOINING_DATE) = 2014 AND MONTH(w.JOINING_DATE) = 02;
 
 -- Q-21. Write an SQL query to fetch the count of employees working in the department ‘Admin’.
+SELECT w.DEPARTMENT,COUNT(*) FROM WORKER AS w WHERE w.DEPARTMENT = 'Admin';
 
 -- Q-22. Write an SQL query to fetch worker full names with salaries >= 50000 and <= 100000.
+SELECT w.FIRST_NAME || ' ' || w.LAST_NAME AS FULL_NAME,w.SALARY FROM WORKER AS w WHERE SALARY BETWEEN 50000 AND 100000;
 
 -- Q-23. Write an SQL query to fetch the no. of workers for each department in the descending order.
+SELECT w.DEPARTMENT, COUNT(*) FROM WORKER AS w GROUP BY w.DEPARTMENT ORDER BY COUNT(*) DESC;
 
 -- Q-24. Write an SQL query to print details of the Workers who are also Managers.
+SELECT w.* FROM WORKER AS w, TITLE AS t ON  w.WORKER_ID = t.WORKER_REF_ID WHERE t.WORKER_TITLE = 'Manager';
 
 -- Q-25. Write an SQL query to fetch number (more than 1) of same titles in the ORG of different types.
+SELECT t.WORKER_TITLE,COUNT(*) AS COUNTER FROM TITLE AS t GROUP BY t.WORKER_TITLE HAVING COUNTER >1;
 
 -- Q-26. Write an SQL query to show only odd rows from a table.
+SELECT * FROM WORKER AS w WHERE MOD(w.WORKER_ID,2) != 0;
+-- OR
+SELECT * FROM WORKER AS w WHERE MOD(w.WORKER_ID,2) <> 0;
 
 -- Q-27. Write an SQL query to show only even rows from a table. 
+SELECT * FROM WORKER AS w WHERE MOD(w.WORKER_ID,2) = 0;
 
 -- Q-28. Write an SQL query to clone a new table from another table.
+CREATE TABLE worker_clone LIKE WORKER;
 
 -- Q-29. Write an SQL query to fetch intersecting records of two tables.
 
